@@ -1,8 +1,8 @@
 #ifndef _BOARD_H_
 #define _BOARD_H_
 
-#include "Defines.h"
 #include <vector>
+#include "Defines.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 
@@ -18,19 +18,20 @@ enum class GameDifficulty : uint8
 struct Point
 {
 public:
-	uint32 X;	// X Coord
-	uint32 Y; 	// Y Coord
-	bool IsDiscovered; // Tells if the point is already known
-	//char Symbol; // NYI: is supposed to be the sysmbol that represents the point: number, * or -
+	uint32 X;
+	uint32 Y;
+	bool IsDiscovered;
 
 	// Mines system
-	uint32 TotalAroundMines; // Total mines around the point
+	uint32 TotalAroundMines;
 	bool IsMine;
 
 	// Flag system
 	bool IsFlag;
 
-	Point(uint32 x, uint32 y) : X(x), Y(y), /*Symbol('-'),*/ TotalAroundMines(0), IsDiscovered(false), IsMine(false), IsFlag(false) { }
+	Point(uint32 x, uint32 y) : X(x), Y(y), IsDiscovered(false), 
+		TotalAroundMines(0), IsMine(false), 
+		IsFlag(false) { }
 
 	void ToString()
 	{
@@ -55,22 +56,22 @@ public:
 
 	void AddPoint(Point* point);
 	void CalcNearPointsFromMine(Point* mine);
-	void IncrementDiscovered() { _discoveredPoints++; }
-	void GetNearPoints(std::vector<Point*>& nearPoints, Point* point);
 	void DiscoverPoint(Point* point);
 	void DiscoverTheEntireMap();
+	void GetNearPoints(std::vector<Point*>& nearPoints, Point* point);
+	void IncrementDiscovered() { _discoveredPoints++; }
 	void Update(sf::RenderWindow& window, sf::Sprite& sprite);
 
 	Point* GetPoint(int row, int col);
 
-	uint32 GetRows() { return _rows; };
 	uint32 GetColums() { return _columns; }
+	uint32 GetRows() { return _rows; };
+	uint32 GetSize() { return GetRows() * GetColums(); }
 	uint32 GetTotalMines() { return _mines; }
 	uint32 GetTotalDiscovered() { return _discoveredPoints; }
-	uint32 GetSize() { return GetRows() * GetColums(); }
 
-	bool IsBoardDicovered();
 	bool ContainsPoint(int row, int col);
+	bool IsBoardDicovered();
 
 	GameDifficulty GetDifficulty() { return _difficulty; }
 
