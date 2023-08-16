@@ -6,17 +6,27 @@
 
 namespace MineSweeper
 {
+	struct MineSweeperConfig
+	{
+		uint32 TotalColumns;
+		uint32 TotalRows;
+		uint32 TotalMines;
+		uint32 Height;
+		uint32 Width;
+	};
+
+	void AskUserForDifficulty();
+	MineSweeperConfig GetConfig(GameDifficulty difficulty);
+	uint32 GetWindowSize(uint32 rows);
 	void InitializeAvailablePointsContainer();
-	void ShowAvailablePoints();
+	void InitializeGame();
 	void InitializeMinesPositions();
 	inline void InitializeRandom();
-	void SetBoardSizeByDifficulty(GameDifficulty difficulty);
-	bool IsValidDifficulty(int difficulty);
-	void AskUserForDifficulty();
 	void InitializeRandomMines();
-	uint32 GetWindowSize(uint32 rows);
-	void InitializeGame();
+	bool IsValidDifficulty(int difficulty);
 	void PlayGame();
+	void SetBoardSizeByDifficulty(GameDifficulty difficulty);
+	void ShowAvailablePoints();
 }
 
 #endif

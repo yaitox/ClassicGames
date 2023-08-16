@@ -1,3 +1,4 @@
+#include <unordered_map>
 #include <SFML/Graphics.hpp>
 
 #include "Board.h"
@@ -6,25 +7,38 @@
 namespace MineSweeper
 {
 	std::vector<Point*> sAvailablePointsStore;
-	std::vector<Point*> sMinesStore;
-	Board* sBoard;
+	Board* board;
+
+	std::unordered_map<GameDifficulty, MineSweeperConfig> mineSweeperConfigMap =
+	{
+		{ GameDifficulty::Easy, {8, 8, 10, 256, 256} },
+		{ GameDifficulty::Medium, {16, 16, 40, 512, 512} },
+		{ GameDifficulty::Hard, {30, 16, 99, 512, 960} }
+	};
+
+	MineSweeperConfig GetConfig(GameDifficulty difficulty)
+	{
+		return mineSweeperConfigMap[difficulty];
+	}
 
 	// Store all the points on container, this container is used later to generate random mines positions.
 	void InitializeAvailablePointsContainer()
 	{
-		for (uint32 row = 0; row < sBoard->GetRows(); ++row)
-			for (uint32 col = 0; col < sBoard->GetColums(); ++col)
+		for (uint32 row = 0; row < board->GetRows(); ++row)
+		{
+			for (uint32 col = 0; col < board->GetColums(); ++col)
 			{
 				Point* point = new Point(row, col);
-				sBoard->AddPoint(point);
+				board->AddPoint(point);
 				sAvailablePointsStore.push_back(point);
 			}
+		}	
 	}
 
 #if _DEBUG
 	void ShowAvailablePoints()
 	{
-		for (std::vector<Point*>::iterator itr = sAvailablePointsStore.begin(); itr != sAvailablePointsStore.end(); ++itr)
+		for (auto itr = sAvailablePointsStore.begin(); itr != sAvailablePointsStore.end(); ++itr)
 			(*itr)->ToString();
 	}
 #endif
@@ -32,15 +46,14 @@ namespace MineSweeper
 	// Random mine positions generator
 	void InitializeMinesPositions()
 	{
-		for (uint8 i = 0; i < sBoard->GetTotalMines(); ++i)
+		for (uint8 i = 0; i < board->GetTotalMines(); ++i)
 		{
-			std::vector<Point*>::iterator itr = sAvailablePointsStore.begin();
+			auto itr = sAvailablePointsStore.begin();
 			std::advance(itr, std::rand() % sAvailablePointsStore.size());
 
 			Point* mine = *itr;
 			mine->IsMine = true;
-			sBoard->CalcNearPointsFromMine(mine);
-			sMinesStore.push_back(mine);
+			board->CalcNearPointsFromMine(mine);
 
 			sAvailablePointsStore.erase(itr);
 		}
@@ -56,7 +69,7 @@ namespace MineSweeper
 	// Initialize the board based on difficulty.
 	void SetBoardSizeByDifficulty(GameDifficulty difficulty)
 	{
-		sBoard = new Board(difficulty);
+		board = new Board(difficulty);
 	}
 
 	bool IsValidDifficulty(int difficulty)
@@ -96,35 +109,13 @@ namespace MineSweeper
 		InitializeMinesPositions();
 	}
 
-	uint32 GetWindowSize(uint32 rows)
-	{
-		uint32 size = 0;
-		switch (rows)
-		{
-		case 8:
-			size = 256;
-			break;
-
-		case 16:
-			size = 512;
-			break;
-
-		case 30:
-			size = 960;
-			break;
-		}
-
-		return size;
-	}
-
 	void InitializeGame()
 	{
 		system("cls");
-		delete sBoard;
+		delete board;
 
-		sBoard = nullptr;
+		board = nullptr;
 		sAvailablePointsStore.clear();
-		sMinesStore.clear();
 
 		InitializeRandom();
 		AskUserForDifficulty();
@@ -135,11 +126,13 @@ namespace MineSweeper
 	{
 		InitializeGame();
 
-		sf::RenderWindow window(sf::VideoMode(GetWindowSize(sBoard->GetColums()), GetWindowSize(sBoard->GetRows())), "Mine Sweeper");
+		MineSweeperConfig config = mineSweeperConfigMap[board->GetDifficulty()];
+
+		sf::RenderWindow window(sf::VideoMode(config.Width, config.Height), "Mine Sweeper");
 		sf::Texture texture;
 		texture.loadFromFile("tiles.jpg");
 		sf::Sprite sprite(texture);
-		sBoard->Update(window, sprite);
+		board->Update(window, sprite);
 
 		while (window.isOpen())
 		{
@@ -158,19 +151,19 @@ namespace MineSweeper
 
 				case sf::Event::MouseButtonPressed:
 				{
-					Point* point = sBoard->GetPoint(y, x);
+					Point* point = board->GetPoint(y, x);
 					switch (e.key.code)
 					{
 					case sf::Mouse::Left:
-						sBoard->DiscoverPoint(point);
-						sBoard->Update(window, sprite);
+						board->DiscoverPoint(point);
+						board->Update(window, sprite);
 						break;
 
 					case sf::Mouse::Right:
 						if (!point->IsDiscovered)
 						{
 							point->SetOrUndoFlag();
-							sBoard->Update(window, sprite);
+							board->Update(window, sprite);
 						}
 
 						break;

@@ -1,35 +1,12 @@
 #include "Board.h"
+#include "MineSweeper.h"
 
 Board::Board(GameDifficulty difficulty) : _difficulty(difficulty), _discoveredPoints(0)
 {
-	uint32 rows = 0, columns = 0, mines = 0;
-	switch (difficulty)
-	{
-		case GameDifficulty::Easy:
-			columns = 8;
-			rows = 8;
-			mines = 10;
-			break;
-
-		case GameDifficulty::Medium:
-			columns = 16;
-			rows = 16;
-			mines = 40;
-			break;
-
-		case GameDifficulty::Hard:
-			columns = 30;
-			rows = 16;
-			mines = 99;
-			break;
-
-		default:
-			break;
-	}
-
-	_rows = rows;
-	_columns = columns;
-	_mines = mines;
+	MineSweeper::MineSweeperConfig config = MineSweeper::GetConfig(difficulty);
+	_rows = config.TotalRows;
+	_columns = config.TotalColumns;
+	_mines = config.TotalMines;
 	_board.resize(_rows, std::vector<Point*>(_columns));
 }
 
