@@ -21,11 +21,13 @@ namespace MineSweeper
 			}
 	}
 
+#if _DEBUG
 	void ShowAvailablePoints()
 	{
 		for (std::vector<Point*>::iterator itr = sAvailablePointsStore.begin(); itr != sAvailablePointsStore.end(); ++itr)
 			(*itr)->ToString();
 	}
+#endif
 
 	// Random mine positions generator
 	void InitializeMinesPositions()
