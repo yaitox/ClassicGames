@@ -65,7 +65,7 @@ bool Board::ContainsPoint(int row, int col)
 
 void Board::GetNearPoints(std::vector<Point*>& nearPoints, Point* point)
 {
-	for (int row = point->X - 1; row <= point->X + 1; ++row)
+	for (int row = int(point->X) - 1; row <= int(point->X) + 1; ++row)
 	{
 		for (int col = point->Y - 1; col <= point->Y + 1; ++col)
 		{
