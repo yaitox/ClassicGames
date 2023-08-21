@@ -139,40 +139,45 @@ namespace MineSweeper
 			sf::Event e;
 			while (window.waitEvent(e))
 			{
+				if (board->GetGameState() != GameState::Playing)
+				{
+					window.close();
+					break;
+				}
+
 				sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 				int x = mousePos.x / 32;
 				int y = mousePos.y / 32;
 
 				switch (e.type)
 				{
-				case sf::Event::Closed:
-					window.close();
-					break;
+					case sf::Event::Closed:
+						window.close();
+						break;
 
-				case sf::Event::MouseButtonPressed:
-				{
-					Point* point = board->GetPoint(y, x);
-					switch (e.key.code)
+					case sf::Event::MouseButtonPressed:
 					{
-					case sf::Mouse::Left:
-						board->DiscoverPoint(point);
-						board->Update(window, sprite);
-						break;
-
-					case sf::Mouse::Right:
-						if (!point->IsDiscovered)
+						Point* point = board->GetPoint(y, x);
+						switch (e.key.code)
 						{
-							point->SetOrUndoFlag();
-							board->Update(window, sprite);
-						}
+							case sf::Mouse::Left:
+								board->DiscoverPoint(point);
+								board->Update(window, sprite);
+								break;
 
-						break;
+							case sf::Mouse::Right:
+								if (point->IsDiscovered)
+									break;
+
+								point->SetOrUndoFlag();
+								board->Update(window, sprite);
+
+								break;
+						}
 					}
-				}
 				}
 			}
 		}
-
 		PlayGame();
 	}
 }

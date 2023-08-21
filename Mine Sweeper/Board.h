@@ -49,6 +49,13 @@ public:
 	void SetOrUndoFlag() { IsFlag = !IsFlag; }
 };
 
+enum class GameState : uint32
+{
+	Lose,
+	Win,
+	Playing
+};
+
 class Board
 {
 public:
@@ -75,6 +82,9 @@ public:
 
 	GameDifficulty GetDifficulty() { return _difficulty; }
 
+	void SetGameState(GameState state) { _state = state; }
+	GameState const GetGameState() { return _state; }
+
 private:
 	std::vector<std::vector<Point*>> _board;
 	uint32 _rows;
@@ -82,6 +92,7 @@ private:
 	uint32 _mines;
 	uint32 _discoveredPoints;
 	GameDifficulty _difficulty;
+	GameState _state;
 };
 
 #endif

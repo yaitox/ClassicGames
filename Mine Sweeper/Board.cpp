@@ -7,6 +7,7 @@ Board::Board(GameDifficulty difficulty) : _difficulty(difficulty), _discoveredPo
 	_rows = config.TotalRows;
 	_columns = config.TotalColumns;
 	_mines = config.TotalMines;
+	_state = GameState::Playing;
 	_board.resize(_rows, std::vector<Point*>(_columns));
 }
 
@@ -59,6 +60,7 @@ void Board::DiscoverPoint(Point* point)
 
 	if (point->IsMine)
 	{
+		SetGameState(GameState::Lose);
 		DiscoverTheEntireMap();
 		return;
 	}
@@ -73,6 +75,12 @@ void Board::DiscoverPoint(Point* point)
 	for (Point* nearPoint : nearPoints)
 		if (point->TotalAroundMines == 0 && !nearPoint->IsFlag)
 			DiscoverPoint(nearPoint);
+
+	if (IsBoardDicovered() && GetGameState() == GameState::Playing)
+	{
+		SetGameState(GameState::Win);
+		return;
+	}
 }
 
 void Board::DiscoverTheEntireMap()
