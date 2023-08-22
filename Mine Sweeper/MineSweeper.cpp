@@ -112,6 +112,7 @@ namespace MineSweeper
 	void InitializeGame()
 	{
 		system("cls");
+
 		delete board;
 
 		board = nullptr;

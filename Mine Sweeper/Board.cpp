@@ -11,6 +11,15 @@ Board::Board(GameDifficulty difficulty) : _difficulty(difficulty), _discoveredPo
 	_board.resize(_rows, std::vector<Point*>(_columns));
 }
 
+Board::~Board()
+{
+	for (uint32 row = 0; row < _rows; ++row)
+		for (uint32 col = 0; col < _columns; ++col)
+			delete _board[row][col];
+
+	_board.clear();
+}
+
 void Board::AddPoint(Point* newPoint)
 {
 	_board[newPoint->X][newPoint->Y] = newPoint;

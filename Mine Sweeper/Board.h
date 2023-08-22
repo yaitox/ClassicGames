@@ -33,6 +33,8 @@ public:
 		TotalAroundMines(0), IsMine(false), 
 		IsFlag(false) { }
 
+	~Point() { }
+
 	void ToString()
 	{
 		std::cout << "Point set on:" << std::endl
@@ -60,6 +62,7 @@ class Board
 {
 public:
 	Board(GameDifficulty difficulty);
+	~Board();
 
 	void AddPoint(Point* point);
 	void CalcNearPointsFromMine(Point* mine);
