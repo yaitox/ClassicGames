@@ -6,7 +6,7 @@
 
 namespace MineSweeper
 {
-	std::vector<Point*> sAvailablePointsStore;
+	std::vector<Point*> availablePointsStore;
 	Board* board;
 
 	std::unordered_map<GameDifficulty, MineSweeperConfig> mineSweeperConfigMap =
@@ -30,7 +30,7 @@ namespace MineSweeper
 			{
 				Point* point = new Point(row, col);
 				board->AddPoint(point);
-				sAvailablePointsStore.push_back(point);
+				availablePointsStore.push_back(point);
 			}
 		}	
 	}
@@ -48,14 +48,14 @@ namespace MineSweeper
 	{
 		for (uint8 i = 0; i < board->GetTotalMines(); ++i)
 		{
-			auto itr = sAvailablePointsStore.begin();
-			std::advance(itr, std::rand() % sAvailablePointsStore.size());
+			auto itr = availablePointsStore.begin();
+			std::advance(itr, std::rand() % availablePointsStore.size());
 
 			Point* mine = *itr;
 			mine->IsMine = true;
 			board->CalcNearPointsFromMine(mine);
 
-			sAvailablePointsStore.erase(itr);
+			availablePointsStore.erase(itr);
 		}
 	}
 
@@ -115,7 +115,7 @@ namespace MineSweeper
 		delete board;
 
 		board = nullptr;
-		sAvailablePointsStore.clear();
+		availablePointsStore.clear();
 
 		InitializeRandom();
 		AskUserForDifficulty();

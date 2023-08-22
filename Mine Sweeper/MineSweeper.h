@@ -4,17 +4,17 @@
 #include <vector>
 #include "Board.h"
 
+struct MineSweeperConfig
+{
+	uint32 TotalColumns;
+	uint32 TotalRows;
+	uint32 TotalMines;
+	uint32 Height;
+	uint32 Width;
+};
+
 namespace MineSweeper
 {
-	struct MineSweeperConfig
-	{
-		uint32 TotalColumns;
-		uint32 TotalRows;
-		uint32 TotalMines;
-		uint32 Height;
-		uint32 Width;
-	};
-
 	void AskUserForDifficulty();
 	MineSweeperConfig GetConfig(GameDifficulty difficulty);
 	uint32 GetWindowSize(uint32 rows);

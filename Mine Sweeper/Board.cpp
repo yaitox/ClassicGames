@@ -3,7 +3,7 @@
 
 Board::Board(GameDifficulty difficulty) : _difficulty(difficulty), _discoveredPoints(0)
 {
-	MineSweeper::MineSweeperConfig config = MineSweeper::GetConfig(difficulty);
+	MineSweeperConfig config = MineSweeper::GetConfig(difficulty);
 	_rows = config.TotalRows;
 	_columns = config.TotalColumns;
 	_mines = config.TotalMines;
