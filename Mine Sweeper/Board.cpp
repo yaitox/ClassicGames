@@ -45,10 +45,13 @@ void Board::GetNearPoints(std::vector<Point*>& nearPoints, Point* point)
 {
 	for (int row = int(point->X) - 1; row <= int(point->X) + 1; ++row)
 	{
-		for (int col = point->Y - 1; col <= point->Y + 1; ++col)
+		for (int col = int(point->Y) - 1; col <= int(point->Y) + 1; ++col)
 		{
 			if (Point* nearPoint = GetPoint(row, col))
-				nearPoints.push_back(nearPoint);
+			{
+				if (nearPoint != point)
+					nearPoints.push_back(nearPoint);
+			}
 		}
 	}	
 }
