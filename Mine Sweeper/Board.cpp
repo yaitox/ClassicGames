@@ -1,9 +1,11 @@
 #include "Board.h"
 #include "MineSweeper.h"
 
-Board::Board(GameDifficulty difficulty) : _difficulty(difficulty), _discoveredPoints(0)
+void Board::InitializeBoard(GameDifficulty difficulty)
 {
 	MineSweeperConfig config = MineSweeper::GetConfig(difficulty);
+	_difficulty = difficulty;
+	_discoveredPoints = 0;
 	_rows = config.TotalRows;
 	_columns = config.TotalColumns;
 	_mines = config.TotalMines;
@@ -11,7 +13,7 @@ Board::Board(GameDifficulty difficulty) : _difficulty(difficulty), _discoveredPo
 	_board.resize(_rows, std::vector<Point*>(_columns));
 }
 
-Board::~Board()
+void Board::Clean()
 {
 	for (uint32 row = 0; row < _rows; ++row)
 		for (uint32 col = 0; col < _columns; ++col)

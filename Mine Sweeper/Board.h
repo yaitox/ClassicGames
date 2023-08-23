@@ -61,8 +61,17 @@ enum class GameState : uint32
 class Board
 {
 public:
-	Board(GameDifficulty difficulty);
-	~Board();
+	
+	static Board* instance()
+	{
+		static Board instance;
+		return &instance;
+	}
+
+	Board(Board const&) = delete;
+	void operator=(Board const&) = delete;
+
+	void Clean();
 
 	void AddPoint(Point* point);
 	void CalcNearPointsFromMine(Point* mine);
@@ -84,11 +93,14 @@ public:
 	bool IsBoardDicovered();
 
 	GameDifficulty GetDifficulty() { return _difficulty; }
+	void InitializeBoard(GameDifficulty const difficulty);
 
 	void SetGameState(GameState state) { _state = state; }
 	GameState const GetGameState() { return _state; }
 
 private:
+	Board() { };
+
 	std::vector<std::vector<Point*>> _board;
 	uint32 _rows;
 	uint32 _columns;
@@ -97,5 +109,7 @@ private:
 	GameDifficulty _difficulty;
 	GameState _state;
 };
+
+#define sBoard Board::instance()
 
 #endif
