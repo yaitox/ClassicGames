@@ -16,14 +16,14 @@ struct MineSweeperConfig
 namespace MineSweeper
 {
 	void AskUserForDifficulty();
-	MineSweeperConfig GetConfig(GameDifficulty difficulty);
+	MineSweeperConfig const& GetConfig(GameDifficulty const& difficulty);
 	uint32 GetWindowSize(uint32 rows);
-	void InitializeAvailablePointsContainer();
+	void InitializeAvailablePointsContainer(std::vector<Point*>& availablePoints);
 	void InitializeGame();
-	void InitializeMinesPositions();
+	void InitializeMinesPositions(std::vector<Point*>& availablePoints);
 	inline void InitializeRandom();
 	void InitializeRandomMines();
-	bool IsValidDifficulty(int difficulty);
+	bool const IsValidDifficulty(int const& difficulty);
 	void PlayGame();
 	void SetBoardSizeByDifficulty(GameDifficulty difficulty);
 	void ShowAvailablePoints();

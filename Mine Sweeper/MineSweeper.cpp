@@ -6,22 +6,20 @@
 
 namespace MineSweeper
 {
-	std::vector<Point*> availablePointsStore;
-
-	std::unordered_map<GameDifficulty, MineSweeperConfig> mineSweeperConfigMap =
+	MineSweeperConfig const& GetConfig(GameDifficulty const& difficulty)
 	{
-		{ GameDifficulty::Easy, {8, 8, 10, 256, 256} },
-		{ GameDifficulty::Medium, {16, 16, 40, 512, 512} },
-		{ GameDifficulty::Hard, {30, 16, 99, 512, 960} }
-	};
+		std::unordered_map<GameDifficulty, MineSweeperConfig> mineSweeperConfigMap =
+		{
+			{ GameDifficulty::Easy,		{8,   8, 10, 256, 256} },
+			{ GameDifficulty::Medium,	{16, 16, 40, 512, 512} },
+			{ GameDifficulty::Hard,		{30, 16, 99, 512, 960} }
+		};
 
-	MineSweeperConfig GetConfig(GameDifficulty difficulty)
-	{
 		return mineSweeperConfigMap[difficulty];
 	}
 
 	// Store all the points on container, this container is used later to generate random mines positions.
-	void InitializeAvailablePointsContainer()
+	void InitializeAvailablePointsContainer(std::vector<Point*>& availablePoints)
 	{
 		for (uint32 row = 0; row < sBoard->GetRows(); ++row)
 		{
@@ -29,7 +27,7 @@ namespace MineSweeper
 			{
 				Point* point = new Point(row, col);
 				sBoard->AddPoint(point);
-				availablePointsStore.push_back(point);
+				availablePoints.push_back(point);
 			}
 		}	
 	}
@@ -43,18 +41,18 @@ namespace MineSweeper
 #endif
 
 	// Random mine positions generator
-	void InitializeMinesPositions()
+	void InitializeMinesPositions(std::vector<Point*>& availablePoints)
 	{
 		for (uint8 i = 0; i < sBoard->GetTotalMines(); ++i)
 		{
-			auto itr = availablePointsStore.begin();
-			std::advance(itr, std::rand() % availablePointsStore.size());
+			auto itr = availablePoints.begin();
+			std::advance(itr, std::rand() % availablePoints.size());
 
 			Point* mine = *itr;
 			mine->IsMine = true;
 			sBoard->CalcNearPointsFromMine(mine);
 
-			availablePointsStore.erase(itr);
+			availablePoints.erase(itr);
 		}
 	}
 
@@ -65,14 +63,9 @@ namespace MineSweeper
 		std::srand(uTimeNow);
 	}
 
-	bool IsValidDifficulty(int difficulty)
+	bool const IsValidDifficulty(int const& difficulty)
 	{
 		return difficulty >= uint8(GameDifficulty::Easy) && difficulty <= uint8(GameDifficulty::Hard);
-	}
-
-	int ConvertCharToInt(char ch)
-	{
-		return ch - '0';
 	}
 
 	void AskUserForDifficulty()
@@ -84,7 +77,7 @@ namespace MineSweeper
 
 		std::string difficultyInput; std::cin >> difficultyInput; // We assume a string is given.
 
-		int difficulty = ConvertCharToInt(difficultyInput[0]);
+		int const difficulty = int(difficultyInput[0] - '0');
 
 		if (difficultyInput.size() != 1 || !IsValidDifficulty(difficulty))
 		{
@@ -98,8 +91,9 @@ namespace MineSweeper
 
 	void InitializeRandomMines()
 	{
-		InitializeAvailablePointsContainer();
-		InitializeMinesPositions();
+		std::vector<Point*> availablePoints;
+		InitializeAvailablePointsContainer(availablePoints);
+		InitializeMinesPositions(availablePoints);
 	}
 
 	void InitializeGame()
@@ -107,7 +101,6 @@ namespace MineSweeper
 		system("cls");
 
 		sBoard->Clean();
-		availablePointsStore.clear();
 		InitializeRandom();
 		AskUserForDifficulty();
 		InitializeRandomMines();
@@ -117,7 +110,7 @@ namespace MineSweeper
 	{
 		InitializeGame();
 
-		MineSweeperConfig config = mineSweeperConfigMap[sBoard->GetDifficulty()];
+		MineSweeperConfig const& config = GetConfig(sBoard->GetDifficulty());
 
 		sf::RenderWindow window(sf::VideoMode(config.Width, config.Height), "Mine Sweeper");
 		sf::Texture texture;
