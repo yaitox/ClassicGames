@@ -126,10 +126,10 @@ void Board::Update(sf::RenderWindow& window, sf::Sprite& sprite)
 			if (point->IsFlag)
 				index = 11;
 
-			if (!point->IsDiscovered && !point->IsFlag)
+			else if (!point->IsDiscovered)
 				index = 10;
 
-			if (point->IsMine && point->IsDiscovered)
+			else if (point->IsMine)
 				index = 9;
 
 			sprite.setTextureRect(sf::IntRect(index * 32, 0, 32, 32));
