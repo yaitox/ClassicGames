@@ -8,6 +8,7 @@ namespace MineSweeper
 {
 	MineSweeperConfig const& GetConfig(GameDifficulty const& difficulty)
 	{
+		// Change with config file instead of hardcoding here.
 		std::unordered_map<GameDifficulty, MineSweeperConfig> mineSweeperConfigMap =
 		{
 			{ GameDifficulty::Easy,		{8,   8, 10, 256, 256} },
@@ -43,15 +44,19 @@ namespace MineSweeper
 	// Random mine positions generator
 	void InitializeMinesPositions(std::vector<Point*>& availablePoints)
 	{
+		// Total mines to be generated on the map.
 		for (uint8 i = 0; i < sBoard->GetTotalMines(); ++i)
 		{
 			auto itr = availablePoints.begin();
+			// Gets a random iterator from the available points.
 			std::advance(itr, std::rand() % availablePoints.size());
 
+			// Now convert this iterator pointer to a mine.
 			Point* mine = *itr;
 			mine->IsMine = true;
 			sBoard->CalcNearPointsFromMine(mine);
 
+			// We will never use this iterator again so lets drop it from the available points.
 			availablePoints.erase(itr);
 		}
 	}
@@ -75,8 +80,10 @@ namespace MineSweeper
 			<< "1 - Medium: 16 rows, 16 columns, 40 mines." << std::endl
 			<< "2 - Hard: 30 rows, 16 columns, 99 mines." << std::endl;
 
-		std::string difficultyInput; std::cin >> difficultyInput; // We assume a string is given.
+		// We assume a string is given.
+		std::string difficultyInput; std::cin >> difficultyInput; 
 
+		// Convert the first char of the input to a number.
 		int const difficulty = int(difficultyInput[0] - '0');
 
 		if (difficultyInput.size() != 1 || !IsValidDifficulty(difficulty))
@@ -120,20 +127,20 @@ namespace MineSweeper
 
 		while (window.isOpen())
 		{
-			sf::Event e;
-			while (window.waitEvent(e))
+			if (sBoard->GetGameState() != GameState::Playing)
 			{
-				if (sBoard->GetGameState() != GameState::Playing)
-				{
-					window.close();
-					break;
-				}
+				window.close();
+				break;
+			}
 
+			sf::Event event;
+			while (window.waitEvent(event))
+			{
 				sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 				int x = mousePos.x / 32;
 				int y = mousePos.y / 32;
 
-				switch (e.type)
+				switch (event.type)
 				{
 					case sf::Event::Closed:
 						window.close();
@@ -142,7 +149,7 @@ namespace MineSweeper
 					case sf::Event::MouseButtonPressed:
 					{
 						Point* point = sBoard->GetPoint(y, x);
-						switch (e.key.code)
+						switch (event.key.code)
 						{
 							case sf::Mouse::Left:
 								sBoard->DiscoverPoint(point);

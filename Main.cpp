@@ -1,4 +1,4 @@
-#include "MineSweeper.h"
+#include "MineSweeper/MineSweeper.h"
 
 int main()
 {
