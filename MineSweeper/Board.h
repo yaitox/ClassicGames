@@ -2,7 +2,7 @@
 #define _BOARD_H_
 
 #include <vector>
-#include "Defines.h"
+#include "../Defines.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 
