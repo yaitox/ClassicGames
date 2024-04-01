@@ -6,14 +6,8 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 
-enum class GameDifficulty : uint8
-{
-	Easy,
-	Medium,
-	Hard,
-
-	Max
-};
+enum class GameDifficulty : uint8;
+enum class GameState : uint8;
 
 struct Point
 {
@@ -49,13 +43,6 @@ public:
 	}
 
 	void SetOrUndoFlag() { IsFlag = !IsFlag; }
-};
-
-enum class GameState : uint32
-{
-	Lose,
-	Win,
-	Playing
 };
 
 class Board

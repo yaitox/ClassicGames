@@ -2,7 +2,9 @@
 #define _MINE_SWEEPER_H
 
 #include <vector>
-#include "Board.h"
+#include "../Defines.h"
+
+struct Point;
 
 struct MineSweeperConfig
 {
@@ -11,6 +13,22 @@ struct MineSweeperConfig
 	uint32 TotalMines;
 	uint32 Height;
 	uint32 Width;
+};
+
+enum class GameDifficulty : uint8
+{
+	Easy,
+	Medium,
+	Hard,
+
+	Max
+};
+
+enum class GameState : uint8
+{
+	Lose,
+	Win,
+	Playing
 };
 
 namespace MineSweeper
