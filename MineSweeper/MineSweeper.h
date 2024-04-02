@@ -11,8 +11,8 @@ struct MineSweeperConfig
 	uint32 TotalColumns;
 	uint32 TotalRows;
 	uint32 TotalMines;
-	uint32 Height;
-	uint32 Width;
+	uint32 BoardHeight;
+	uint32 BoardWidth;
 };
 
 enum class GameDifficulty : uint8

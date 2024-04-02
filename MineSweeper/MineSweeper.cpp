@@ -119,7 +119,7 @@ namespace MineSweeper
 
 		MineSweeperConfig const& config = GetConfig(sBoard->GetDifficulty());
 
-		sf::RenderWindow window(sf::VideoMode(config.Width, config.Height), "Mine Sweeper");
+		sf::RenderWindow window(sf::VideoMode(config.BoardWidth, config.BoardHeight), "Mine Sweeper");
 		sf::Texture texture;
 		texture.loadFromFile("tiles.jpg");
 		sf::Sprite sprite(texture);
