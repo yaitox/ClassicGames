@@ -1,4 +1,4 @@
-#include "Board.h"
+#include "MineSweeperBoard.h"
 #include "MineSweeper.h"
 
 void Board::InitializeBoard(GameDifficulty difficulty)

@@ -1,5 +1,5 @@
-#ifndef _BOARD_H_
-#define _BOARD_H_
+#ifndef _MINE_SWEEPER_BOARD_H_
+#define _MINE_SWEEPER_BOARD_H_
 
 #include <vector>
 #include "../Defines.h"
@@ -97,6 +97,6 @@ private:
 	GameState _state;
 };
 
-#define sBoard Board::instance()
+#define sMineSweeperBoard Board::instance()
 
 #endif
