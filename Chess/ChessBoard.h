@@ -19,6 +19,7 @@ public:
 	void operator=(Board const&) = delete;
 
 	void Initialize();
+	void InitializeBoard();
 	void InitializePawns();
 	void InitializeKnights();
 	void InitializeQueens();

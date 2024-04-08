@@ -6,39 +6,17 @@ void Board::InitializePawns()
 	// Black pawns
 	for (uint8 i = 0; i < MAX_COLUMNS; ++i)
 	{
+		Field& field = _board[1][i];
 		Piece* pawn = new Piece(Team::Black, PieceType::Pawn);
-
-		FieldColor color = i % 2 == 0 ? FieldColor::Black : FieldColor::White;
-
-		Position position;
-		position.X = i;
-		position.Y = 6;
-
-		Field field;
 		field.Piece = pawn;
-		field.FieldColor = color;
-		field.Position = position;
-
-		_board[field.Position.Y][field.Position.X] = field;
 	}
 
 	// White pawns
 	for (uint8 i = 0; i < MAX_COLUMNS; ++i)
 	{
+		Field& field = _board[6][i];
 		Piece* pawn = new Piece(Team::White, PieceType::Pawn);
-
-		FieldColor color = i % 2 == 0 ? FieldColor::White : FieldColor::Black;
-
-		Position position;
-		position.X = i;
-		position.Y = 1;
-
-		Field field;
 		field.Piece = pawn;
-		field.FieldColor = color;
-		field.Position = position;
-
-		_board[field.Position.Y][field.Position.X] = field;
 	}
 }
 
@@ -95,8 +73,38 @@ void Board::InitializeKnights()
 	_board[fieldWhiteKnightRight.Position.Y][fieldWhiteKnightRight.Position.X] = fieldWhiteKnightRight;
 }
 
+void Board::InitializeBoard()
+{
+	for (int i = 0; i < MAX_ROWS; ++i)
+	{
+		FieldColor lastColor;
+		if (i % 2 == 0)
+			lastColor = FieldColor::White;
+		else
+			lastColor = FieldColor::Black;
+
+		for (int j = 0; j < MAX_COLUMNS; ++j)
+		{
+			Position position;
+			position.X = i;
+			position.Y = j;
+
+			Field field;
+			field.FieldColor = lastColor;
+			field.Piece = nullptr;
+			field.Position = position;
+			_board[i][j] = field;
+
+			if (lastColor == FieldColor::Black)
+				lastColor = FieldColor::White;
+			else
+				lastColor = FieldColor::Black;
+		}
+	}
+}
+
 void Board::Initialize()
 {
+	InitializeBoard();
 	InitializePawns();
-	InitializeKnights();
 }
