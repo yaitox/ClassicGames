@@ -25,52 +25,20 @@ void Board::InitializeKnights()
 	// Black knights
 	// Left b8
 	Piece* blackKnightLeft = new Piece(Team::Black, PieceType::Knight);
-	Position blackKnightLeftPosition;
-	blackKnightLeftPosition.X = 1;
-	blackKnightLeftPosition.Y = 0;
-
-	Field fieldBlackKnightLeft;
-	fieldBlackKnightLeft.FieldColor = FieldColor::Black;
-	fieldBlackKnightLeft.Piece = blackKnightLeft;
-	fieldBlackKnightLeft.Position = blackKnightLeftPosition;
-	_board[fieldBlackKnightLeft.Position.Y][fieldBlackKnightLeft.Position.X] = fieldBlackKnightLeft;
+	_board[0][1].Piece = blackKnightLeft;
 
 	// Right g8
 	Piece* blackKnightRight = new Piece(Team::Black, PieceType::Knight);
-	Position blackKnightRightPosition;
-	blackKnightRightPosition.X = 6;
-	blackKnightRightPosition.Y = 0;
-
-	Field fieldBlackKnightRight;
-	fieldBlackKnightRight.FieldColor = FieldColor::White;
-	fieldBlackKnightRight.Piece = blackKnightRight;
-	fieldBlackKnightRight.Position = blackKnightRightPosition;
-	_board[fieldBlackKnightRight.Position.Y][fieldBlackKnightRight.Position.X] = fieldBlackKnightRight;
+	_board[0][6].Piece = blackKnightRight;
 
 	// White knights
 	// Left b1
 	Piece* whiteKnightLeft = new Piece(Team::White, PieceType::Knight);
-	Position whiteKnightLeftPosition;
-	whiteKnightLeftPosition.X = 1;
-	whiteKnightLeftPosition.Y = 7;
-
-	Field fieldWhiteKnightLeft;
-	fieldWhiteKnightLeft.FieldColor = FieldColor::White;
-	fieldWhiteKnightLeft.Piece = whiteKnightLeft;
-	fieldWhiteKnightLeft.Position = whiteKnightLeftPosition;
-	_board[fieldWhiteKnightLeft.Position.Y][fieldWhiteKnightLeft.Position.X] = fieldWhiteKnightLeft;
+	_board[7][1].Piece = whiteKnightLeft;
 
 	// Right g1
 	Piece* whiteKnightRight = new Piece(Team::White, PieceType::Knight);
-	Position whiteKnightRightPosition;
-	whiteKnightRightPosition.X = 6;
-	whiteKnightRightPosition.Y = 7;
-
-	Field fieldWhiteKnightRight;
-	fieldWhiteKnightRight.FieldColor = FieldColor::Black;
-	fieldWhiteKnightRight.Piece = whiteKnightRight;
-	fieldWhiteKnightRight.Position = whiteKnightRightPosition;
-	_board[fieldWhiteKnightRight.Position.Y][fieldWhiteKnightRight.Position.X] = fieldWhiteKnightRight;
+	_board[7][6].Piece = whiteKnightRight;
 }
 
 void Board::InitializeBoard()
@@ -107,4 +75,5 @@ void Board::Initialize()
 {
 	InitializeBoard();
 	InitializePawns();
+	InitializeKnights();
 }
