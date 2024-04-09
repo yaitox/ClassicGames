@@ -50,6 +50,23 @@ void Board::InitializeKings()
 	_board[0][4].Piece = blackKing;
 }
 
+void Board::InitializeBishops()
+{
+	// White bishops
+	Piece* whiteLeftBishop = new Piece(Team::White, PieceType::Bishop);
+	_board[7][2].Piece = whiteLeftBishop;
+
+	Piece* whiteRightBishop = new Piece(Team::White, PieceType::Bishop);
+	_board[7][5].Piece = whiteRightBishop;
+
+	// Black bishops
+	Piece* blackLeftBishop = new Piece(Team::Black, PieceType::Bishop);
+	_board[0][2].Piece = blackLeftBishop;
+
+	Piece* blackRightBishop = new Piece(Team::Black, PieceType::Bishop);
+	_board[0][5].Piece = blackRightBishop;
+}
+
 void Board::InitializeBoard()
 {
 	for (int i = 0; i < MAX_ROWS; ++i)
@@ -86,4 +103,5 @@ void Board::Initialize()
 	InitializePawns();
 	InitializeKnights();
 	InitializeKings();
+	InitializeBishops();
 }
