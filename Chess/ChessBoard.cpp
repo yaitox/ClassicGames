@@ -67,6 +67,15 @@ void Board::InitializeBishops()
 	_board[0][5].Piece = blackRightBishop;
 }
 
+void Board::InitializeQueens()
+{
+	Piece* whiteQueen = new Piece(Team::White, PieceType::Queen);
+	_board[7][3].Piece = whiteQueen;
+
+	Piece* blackQueen = new Piece(Team::Black, PieceType::Queen);
+	_board[0][3].Piece = blackQueen;
+}
+
 void Board::InitializeBoard()
 {
 	for (int i = 0; i < MAX_ROWS; ++i)
@@ -104,4 +113,5 @@ void Board::Initialize()
 	InitializeKnights();
 	InitializeKings();
 	InitializeBishops();
+	InitializeQueens();
 }
