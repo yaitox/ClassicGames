@@ -76,6 +76,23 @@ void Board::InitializeQueens()
 	_board[0][3].Piece = blackQueen;
 }
 
+void Board::InitializeRooks()
+{
+	// White rooks
+	Piece* whiteLeftRook = new Piece(Team::White, PieceType::Rook);
+	_board[7][0].Piece = whiteLeftRook;
+
+	Piece* whiteRightRook = new Piece(Team::White, PieceType::Rook);
+	_board[7][7].Piece = whiteRightRook;
+
+	// Black rooks
+	Piece* blackLeftRook = new Piece(Team::Black, PieceType::Rook);
+	_board[0][0].Piece = blackLeftRook;
+
+	Piece* blackRightRook = new Piece(Team::Black, PieceType::Rook);
+	_board[0][7].Piece = blackRightRook;
+}
+
 void Board::InitializeBoard()
 {
 	for (int i = 0; i < MAX_ROWS; ++i)
@@ -114,4 +131,5 @@ void Board::Initialize()
 	InitializeKings();
 	InitializeBishops();
 	InitializeQueens();
+	InitializeRooks();
 }
